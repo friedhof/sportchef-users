@@ -20,13 +20,14 @@ package ch.sportchef.users;
 import lombok.NonNull;
 import lombok.Value;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 
 @Provider
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
@@ -50,11 +51,13 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
     }
 
     private Response createResponse(@NonNull ResponseData responseData) {
+        final JsonObject entity = Json.createObjectBuilder()
+                .add("status", responseData.getStatus())
+                .add("message", responseData.getMessage())
+                .build();
         return Response.status(responseData.getStatus())
-                .type(MediaType.APPLICATION_JSON_TYPE)
-                .entity(new HashMap<String, String>() { {
-                    put("error", responseData.getMessage());
-                } }).build();
+                .type(MediaType.APPLICATION_JSON)
+                .entity(entity).build();
     }
 
     @Value
