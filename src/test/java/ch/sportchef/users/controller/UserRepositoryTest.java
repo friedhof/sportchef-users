@@ -32,6 +32,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.nullValue;
 
 public class UserRepositoryTest {
 
@@ -134,6 +135,25 @@ public class UserRepositoryTest {
         userRepository.update(userToUpdate2);
 
         // assert
+    }
+
+    @Test
+    public void updateNonExistingUser() {
+        // arrange
+        final UserRepository userRepository = new UserRepository();
+        final User userToUpdate = User.builder()
+                .userId(1L)
+                .firstName("Test Firstname")
+                .lastName("Test Lastname")
+                .phone("Test Phone")
+                .email("test@email.test")
+                .build();
+
+        // act
+        final User updatedUser = userRepository.update(userToUpdate);
+
+        // assert
+        assertThat(updatedUser, is(nullValue()));
     }
 
     @Test
