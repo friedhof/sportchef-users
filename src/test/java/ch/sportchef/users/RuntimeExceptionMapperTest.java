@@ -30,6 +30,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 
+import static javax.ws.rs.core.Response.Status.CONFLICT;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,20 +42,20 @@ public class RuntimeExceptionMapperTest {
 
     private RuntimeException exception;
     private String message;
-    private Integer status;
+    private Response.Status status;
 
     @Parameterized.Parameters(name = "{2}: {0}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                { new NotFoundException("Foobar"),               "Foobar", 404 },
-                { new ConcurrentModificationException("Foobar"), "Foobar", 409 },
-                { new RuntimeException("Foobar"),                "Foobar", 500 }
+                { new ConcurrentModificationException("Foobar"), "Foobar", CONFLICT },
+                { new NotFoundException("Foobar"),               "Foobar", NOT_FOUND },
+                { new RuntimeException("Foobar"),                "Foobar", INTERNAL_SERVER_ERROR }
         });
     }
 
     public RuntimeExceptionMapperTest(@NonNull final RuntimeException exception,
                                       @NonNull final String message,
-                                      @NonNull final Integer status) {
+                                      @NonNull final Response.Status status) {
         this.exception = exception;
         this.message = message;
         this.status = status;
@@ -62,7 +65,7 @@ public class RuntimeExceptionMapperTest {
     public void toResponse() {
         // arrange
         final JsonObject expectedEntity = Json.createObjectBuilder()
-                .add("status", this.status)
+                .add("status", this.status.getStatusCode())
                 .add("message", this.message)
                 .build();
         final RuntimeExceptionMapper runtimeExceptionMapper = new RuntimeExceptionMapper();
@@ -71,7 +74,7 @@ public class RuntimeExceptionMapperTest {
         final Response response = runtimeExceptionMapper.toResponse(this.exception);
 
         // assert
-        assertThat(response.getStatus(), is(this.status));
+        assertThat(response.getStatus(), is(this.status.getStatusCode()));
         assertThat(response.getEntity(), equalTo(expectedEntity));
     }
 

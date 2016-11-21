@@ -29,6 +29,10 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.ConcurrentModificationException;
 
+import static javax.ws.rs.core.Response.Status.CONFLICT;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+
 @Provider
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
 
@@ -39,20 +43,20 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
 
     private ResponseData handleException(@NonNull final Throwable e) {
         if (e instanceof ConcurrentModificationException) {
-            return new ResponseData(409, e.getMessage());
+            return new ResponseData(CONFLICT, e.getMessage());
         }
         if (e instanceof NotFoundException) {
-            return new ResponseData(404, e.getMessage());
+            return new ResponseData(NOT_FOUND, e.getMessage());
         }
         if (e.getCause() != null) {
             return handleException(e.getCause());
         }
-        return new ResponseData(500, e.getMessage());
+        return new ResponseData(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     private Response createResponse(@NonNull ResponseData responseData) {
         final JsonObject entity = Json.createObjectBuilder()
-                .add("status", responseData.getStatus())
+                .add("status", responseData.getStatus().getStatusCode())
                 .add("message", responseData.getMessage())
                 .build();
         return Response.status(responseData.getStatus())
@@ -62,7 +66,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
 
     @Value
     private class ResponseData {
-        private int status;
+        private Response.Status status;
         private String message;
     }
 
