@@ -43,6 +43,7 @@ public class User implements Serializable {
     private String phone;
 
     @NotNull
+    // TODO @Email
     private String email;
 
     private Long version;
