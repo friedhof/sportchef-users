@@ -35,6 +35,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -96,13 +97,14 @@ public class UserResourceTest {
                 .build();
         when(userService.read(1L)).thenReturn(Optional.of(testUser));
         final UriBuilder uriBuilder = mock(UriBuilder.class);
-        when(uriBuilder.build()).thenReturn(new URI("/user/1"));
+        when(uriBuilder.build()).thenReturn(new URI("/users/1"));
         when(info.getAbsolutePathBuilder()).thenReturn(uriBuilder);
 
         // act
-        userResource.update(1L, testUser, info);
+        final Response response = userResource.update(1L, testUser, info);
 
         // assert
+        assertThat(response.getHeaderString("Location"), endsWith("/users/1"));
     }
 
     @Test(expected = NotFoundException.class)
