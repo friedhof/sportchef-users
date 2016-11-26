@@ -1,7 +1,7 @@
 *SportChef Users*
 ==================
 
-[![Build Status](https://travis-ci.org/sportchef/sportchef-users.svg?branch=master)](https://travis-ci.org/sportchef/sportchef-users) [![Coverage Status](https://coveralls.io/repos/github/sportchef/sportchef-users/badge.svg?branch=master)](https://coveralls.io/github/sportchef/sportchef-users?branch=master) [![Stories in Ready](https://badge.waffle.io/sportchef/sportchef-users.svg?label=ready&title=Ready)](http://waffle.io/sportchef/sportchef-users)
+[![Build Status](https://travis-ci.org/sportchef/sportchef-users.svg?branch=master)](https://travis-ci.org/sportchef/sportchef-users) [![Coverage Status](https://coveralls.io/repos/github/sportchef/sportchef-users/badge.svg?branch=master)](https://coveralls.io/github/sportchef/sportchef-users?branch=master) [![Stories in Ready](https://badge.waffle.io/sportchef/sportchef-users.svg?label=ready&title=Ready)](http://waffle.io/sportchef/sportchef-users) [![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://gitmoji.carloscuesta.me)
 
 **This repository contains the code for the microservice managing the users of the *SportChef* project. For more information please take a look at our [project website](https://www.sportchef.ch/).**
 
