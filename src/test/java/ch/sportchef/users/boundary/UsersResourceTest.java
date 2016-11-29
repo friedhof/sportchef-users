@@ -66,7 +66,7 @@ public class UsersResourceTest {
                 .build();
         when(userService.create(testUser)).thenReturn(testUser.toBuilder().userId(1L).version(1L).build());
         final UriBuilder uriBuilder = mock(UriBuilder.class);
-        final URI uri = new URI("/user/1");
+        final URI uri = new URI("/users/1");
         when(uriBuilder.path((String) anyObject())).thenReturn(uriBuilder);
         when(uriBuilder.build()).thenReturn(uri);
         when(info.getAbsolutePathBuilder()).thenReturn(uriBuilder);
