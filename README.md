@@ -1,4 +1,4 @@
-:bangbang: | This repository was archived. The development of the Sportchef project was stopped. Thank you very much!
+:bangbang: | This repository was archived. The development of the Sportchef project was stopped.
 ---------- | ----------
 
 *SportChef Users*
